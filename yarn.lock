@@ -2,33 +2,59 @@
 # yarn lockfile v1
 
 
-codemirror-spell-checker@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/codemirror-spell-checker/-/codemirror-spell-checker-1.1.2.tgz#1c660f9089483ccb5113b9ba9ca19c3f4993371e"
-  integrity sha1-HGYPkIlIPMtRE7m6nKGcP0mTNx4=
+"@types/codemirror@^5.60.4":
+  "integrity" "sha512-ZTA3teiCWKT8HUUofqlGPlShu5ojdIajizsS0HpH6GL0/iEdjRt7fXbCLHHqKYP5k7dC/HnnWIjZAiELUwBdjQ=="
+  "resolved" "https://registry.npmjs.org/@types/codemirror/-/codemirror-5.60.10.tgz"
+  "version" "5.60.10"
   dependencies:
-    typo-js "*"
+    "@types/tern" "*"
 
-codemirror@^5.52.2:
-  version "5.61.0"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.61.0.tgz#318e5b034a707207948b92ffc2862195e8fdb08e"
-  integrity sha512-D3wYH90tYY1BsKlUe0oNj2JAhQ9TepkD51auk3N7q+4uz7A/cgJ5JsWHreT0PqieW1QhOuqxQ2reCXV1YXzecg==
+"@types/estree@*":
+  "integrity" "sha512-VeiPZ9MMwXjO32/Xu7+OwflfmeoRwkE/qzndw42gGtgJwZopBnzy2gD//NN1+go1mADzkDcqf/KnFRSjTJ8xJA=="
+  "resolved" "https://registry.npmjs.org/@types/estree/-/estree-1.0.2.tgz"
+  "version" "1.0.2"
 
-easymde@^2.10.1:
-  version "2.10.1"
-  resolved "https://registry.yarnpkg.com/easymde/-/easymde-2.10.1.tgz#671836ed08033def1a4379bfa2d193994c46471d"
-  integrity sha512-khKYfB18ZYbkJAGEeQXaV2ZZ1QS7BavNj2xdcPGpO8GXi30qA9bVxzswGW8QNZQRmPtaXiQDG236Yv/BQY7P2A==
+"@types/marked@^4.0.7":
+  "integrity" "sha512-a79Yc3TOk6dGdituy8hmTTJXjOkZ7zsFYV10L337ttq/rec8lRMDBpV7fL3uLx6TgbFCa5DU/h8FmIBQPSbU0w=="
+  "resolved" "https://registry.npmjs.org/@types/marked/-/marked-4.3.2.tgz"
+  "version" "4.3.2"
+
+"@types/tern@*":
+  "integrity" "sha512-POau56wDk3TQ0mQ0qG7XDzv96U5whSENZ9lC0htDvEH+9YUREo+J2U+apWcVRgR2UydEE70JXZo44goG+akTNQ=="
+  "resolved" "https://registry.npmjs.org/@types/tern/-/tern-0.23.5.tgz"
+  "version" "0.23.5"
   dependencies:
-    codemirror "^5.52.2"
-    codemirror-spell-checker "1.1.2"
-    marked "^0.8.2"
+    "@types/estree" "*"
 
-marked@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.8.2.tgz#4faad28d26ede351a7a1aaa5fec67915c869e355"
-  integrity sha512-EGwzEeCcLniFX51DhTpmTom+dSA/MG/OBUDjnWtHbEnjAH180VzUeAw+oE4+Zv+CoYBWyRlYOTR0N8SO9R1PVw==
+"codemirror-spell-checker@1.1.2":
+  "integrity" "sha1-HGYPkIlIPMtRE7m6nKGcP0mTNx4= sha512-2Tl6n0v+GJRsC9K3MLCdLaMOmvWL0uukajNJseorZJsslaxZyZMgENocPU8R0DyoTAiKsyqiemSOZo7kjGV0LQ=="
+  "resolved" "https://registry.npmjs.org/codemirror-spell-checker/-/codemirror-spell-checker-1.1.2.tgz"
+  "version" "1.1.2"
+  dependencies:
+    "typo-js" "*"
 
-typo-js@*:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/typo-js/-/typo-js-1.1.0.tgz#a5a9f592bcb453666bf70c9694da58705d025ed8"
-  integrity sha512-W3kLbx+ML9PBl5Bzso/lTvVxk4BCveSNAtQeht59FEtxCdGThmn6wSHA4Xq3eQYAK24NHdisMM4JmsK0GFy/pg==
+"codemirror@^5.63.1":
+  "integrity" "sha512-YC4EHbbwQeubZzxLl5G4nlbLc1T21QTrKGaOal/Pkm9dVDMZXMH7+ieSPEOZCtO9I68i8/oteJKOxzHC2zR+0g=="
+  "resolved" "https://registry.npmjs.org/codemirror/-/codemirror-5.65.15.tgz"
+  "version" "5.65.15"
+
+"easymde@^2.18.0":
+  "integrity" "sha512-IxVVUxNWIoXLeqtBU4BLc+eS/ScYhT1Dcb6yF5Wchoj1iXAV+TIIDWx+NCaZhY7RcSHqDPKllbYq7nwGKILnoA=="
+  "resolved" "https://registry.npmjs.org/easymde/-/easymde-2.18.0.tgz"
+  "version" "2.18.0"
+  dependencies:
+    "@types/codemirror" "^5.60.4"
+    "@types/marked" "^4.0.7"
+    "codemirror" "^5.63.1"
+    "codemirror-spell-checker" "1.1.2"
+    "marked" "^4.1.0"
+
+"marked@^4.1.0":
+  "integrity" "sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A=="
+  "resolved" "https://registry.npmjs.org/marked/-/marked-4.3.0.tgz"
+  "version" "4.3.0"
+
+"typo-js@*":
+  "integrity" "sha512-W3kLbx+ML9PBl5Bzso/lTvVxk4BCveSNAtQeht59FEtxCdGThmn6wSHA4Xq3eQYAK24NHdisMM4JmsK0GFy/pg=="
+  "resolved" "https://registry.npmjs.org/typo-js/-/typo-js-1.1.0.tgz"
+  "version" "1.1.0"
