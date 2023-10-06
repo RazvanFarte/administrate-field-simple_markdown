@@ -1,17 +1,7 @@
 # Administrate::Field::SimpleMarkdown
 
-[![No Maintenance Intended](https://unmaintained.tech/badge.svg)](https://unmaintained.tech/) [![Build status](https://github.com/zooppa/administrate-field-simple_markdown/actions/workflows/build.yml/badge.svg)](https://github.com/zooppa/administrate-field-simple_markdown/actions/workflows/build.yml)
+[![Build status](https://github.com/zooppa/administrate-field-simple_markdown/actions/workflows/build.yml/badge.svg)](https://github.com/zooppa/administrate-field-simple_markdown/actions/workflows/build.yml)
 [![Code Climate](https://codeclimate.com/github/zooppa/administrate-field-simple_markdown/badges/gpa.svg)](https://codeclimate.com/github/zooppa/administrate-field-simple_markdown)
-
----
-
-### IMPORTANT NOTICE
-
-**This gem is not actively maintained anymore**.
-
-If you’re interested in taking over and steward the project moving forward, please get in touch.
-
----
 
 A plugin to edit Markdown text in [Administrate] using [EasyMDE].
 
@@ -58,6 +48,30 @@ ATTRIBUTE_TYPES = {
 
 You can pass EasyMDE a configuration object via the `easymde_options` option.
 Check the [full list of available options](https://github.com/Ionaru/easy-markdown-editor#options-list).
+
+### Configure H4, H5 and H6 headings
+```
+Field::SimpleMarkdown.with_options({
+      easymde_options: {
+        toolbar: ['bold', '|', 'heading-3', 
+        {
+          name: 'heading-4',
+          action: 'EasyMDE.toggleHeading4',
+          text: 'H4',
+          title: 'H4'
+      }],
+        lineNumbers: true,
+        autofocus: true,
+        placeholder: 'Type here...',
+        spell_checker: false,
+        sideBySideFullscreen: false,
+        hide_icons: %w[]
+      }
+    }),
+```
+
+For H5 and H6, the specification is similar to the above.
+Make sure to wrap the action with `' '`.
 
 ## About
 
