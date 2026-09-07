@@ -1,7 +1,11 @@
 <%#
 # SimpleMarkdown Form Partial
 
-This partial renders a WYSIWYG text area to help writing Markdown text
+Renders a textarea that the bundled JavaScript upgrades into an EasyMDE editor.
+
+There is no inline script: the editor is found by its data attribute, which
+means it needs no unique element id, survives Turbo navigation, and adds no
+requirement for `unsafe-inline` or `unsafe-eval` in a Content-Security-Policy.
 
 ## Local variables:
 
@@ -14,26 +18,6 @@ This partial renders a WYSIWYG text area to help writing Markdown text
 <div class="field-unit__label">
   <%= f.label field.attribute %>
 </div>
-<div class="field-unit__field simple_markdown">
-  <%= f.text_area field.attribute,
-    data: {
-      easymde_options: field.easymde_options
-    }
-  %>
+<div class="field-unit__field simple_markdown simple-markdown">
+  <%= f.text_area field.attribute, field.input_options %>
 </div>
-<%= content_for :javascript do %>
-  <%= javascript_tag nonce: true do %>
-    $(function() {
-      var el = document.getElementById('<%= field.html_id %>')
-      var options = JSON.parse(el.getAttribute('data-easymde-options'));
-      options.toolbar = options['toolbar'].map(function(o) {
-        if(o['action'] != null) {
-          o.action = eval(o.action);
-        }
-        return o;
-      })
-
-      new EasyMDE(Object.assign({}, { element: el }, options));
-    });
-  <%- end %>
-<% end %>

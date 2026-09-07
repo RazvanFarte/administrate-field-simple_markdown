@@ -1,7 +1,11 @@
 <%#
 # SimpleMarkdown Index Partial
 
-This partial renders a Markdown field to text
+Renders a plain-text summary of a Markdown field.
+
+`field.preview` strips a slice of the Markdown source rather than rendering the
+whole document and discarding it, which is what makes an index page with a
+Markdown column cheap regardless of how long the documents are.
 
 ## Local variables:
 
@@ -9,4 +13,4 @@ This partial renders a Markdown field to text
   An instance of Administrate::Field::SimpleMarkdown.
 %>
 
-<%= truncate field.to_s %>
+<%= field.preview %>
