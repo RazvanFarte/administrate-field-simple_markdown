@@ -1,9 +1,51 @@
+plugins:
+  - rubocop-rspec
+
 AllCops:
   NewCops: enable
+  TargetRubyVersion: 3.1
+  Exclude:
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+    - 'spec/dummy/db/*.sqlite3'
+    - 'tmp/**/*'
 
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
+    - '*.gemspec'
+    - 'tasks/*.rake'
+
+Metrics/MethodLength:
+  Max: 15
+
+Layout/LineLength:
+  Max: 100
 
 Style/Documentation:
   Enabled: false
+
+# The dummy application is deliberately shaped like a Rails app, not a gem.
+RSpec/MultipleExpectations:
+  Max: 3
+
+# The gem entry point has to be named after the gem.
+Naming/FileName:
+  Exclude:
+    - 'lib/administrate-field-easymde.rb'
+
+# Benchmarks print aligned tables; annotated tokens make the format strings
+# harder to read than the columns they produce.
+Style/FormatStringToken:
+  Exclude:
+    - 'bench/**/*.rb'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'spec/**/*.rb'
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 8
+
+RSpec/ExampleLength:
+  Max: 10
