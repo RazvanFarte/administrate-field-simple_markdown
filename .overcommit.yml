@@ -5,3 +5,27 @@ PreCommit:
 
  TrailingWhitespace:
    enabled: true
+
+# Slower, so these run before push rather than on every commit. RuboCop and
+# RSpec are a hard gate; the browser suite needs Docker and is throttled by
+# bin/prepush-browser-suite (see that script for how to force or skip it),
+# so it does not block a push just because Docker is unavailable.
+#
+# RuboCopFull/RSpecFull run through `bash -c` rather than as a bare command:
+# Overcommit appends its own arguments (the git remote name and URL) to
+# whatever `command:` names, and rspec/rubocop try to load those as file
+# paths. Wrapping in a subshell absorbs the stray args instead of passing
+# them through - bin/prepush-browser-suite does not need this since a script
+# file already gets its own argv, separate from the command line inside it.
+PrePush:
+ RuboCopFull:
+   enabled: true
+   command: ['bash', '-c', 'bundle exec rubocop']
+
+ RSpecFull:
+   enabled: true
+   command: ['bash', '-c', 'bundle exec rspec']
+
+ PlaywrightSuite:
+   enabled: true
+   command: ['bin/prepush-browser-suite']

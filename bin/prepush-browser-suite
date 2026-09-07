@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+#
+# Runs the Playwright browser suite (rake browser:test) before push, but not
+# on every push - it needs Docker, takes ~20s, and the unit/security specs
+# already cover the same field logic. Called from the PrePush hook in
+# .overcommit.yml.
+#
+# Throttled to once per BROWSER_SUITE_INTERVAL_HOURS (default 24) per clone,
+# tracked in .git/prepush-browser-suite-last-run (local only, never
+# committed). Environment overrides:
+#
+#   SKIP_BROWSER_SUITE=1 git push     # skip regardless of the throttle
+#   FORCE_BROWSER_SUITE=1 git push    # run regardless of the throttle
+#
+# Missing or unreachable Docker is a warning, not a failed push: RuboCop and
+# RSpec (also in the PrePush hook) are the hard gate.
+
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+STATE_FILE=".git/prepush-browser-suite-last-run"
+INTERVAL_HOURS="${BROWSER_SUITE_INTERVAL_HOURS:-24}"
+
+if [ "${SKIP_BROWSER_SUITE:-0}" = "1" ]; then
+  echo "prepush-browser-suite: SKIP_BROWSER_SUITE=1, skipping."
+  exit 0
+fi
+
+if [ "${FORCE_BROWSER_SUITE:-0}" != "1" ] && [ -f "$STATE_FILE" ]; then
+  last_run=$(cat "$STATE_FILE")
+  now=$(date +%s)
+  age_hours=$(( (now - last_run) / 3600 ))
+  if [ "$age_hours" -lt "$INTERVAL_HOURS" ]; then
+    echo "prepush-browser-suite: ran ${age_hours}h ago (< ${INTERVAL_HOURS}h)," \
+         "skipping. Set FORCE_BROWSER_SUITE=1 to run it anyway."
+    exit 0
+  fi
+fi
+
+if ! command -v docker >/dev/null 2>&1 || ! docker info >/dev/null 2>&1; then
+  echo "prepush-browser-suite: Docker is not available - skipping without" \
+       "blocking the push. Run bin/setup to check your Docker install." >&2
+  exit 0
+fi
+
+echo "prepush-browser-suite: running rake browser:test ..."
+if bundle exec rake browser:test; then
+  date +%s > "$STATE_FILE"
+  exit 0
+fi
+
+echo "prepush-browser-suite: browser suite failed." >&2
+exit 1
