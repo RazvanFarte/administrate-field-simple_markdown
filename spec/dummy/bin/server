@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Boots the dummy application for browser tests and benchmarks.
+# Usage: bundle exec ruby spec/dummy/bin/server [port]
+require 'puma'
+require_relative '../config/environment'
+
+port = Integer(ARGV[0] || ENV.fetch('PORT', '3123'))
+
+server = Puma::Server.new(Rails.application)
+server.add_tcp_listener('127.0.0.1', port)
+
+warn "dummy app listening on http://127.0.0.1:#{port} " \
+     "(#{Rails.configuration.x.editor_fields} editors, " \
+     "#{ENV.fetch('ASSET_PIPELINE', 'sprockets')})"
+
+server.run
+sleep
