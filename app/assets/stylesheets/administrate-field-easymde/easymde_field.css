@@ -1,0 +1,48 @@
+/*
+ * administrate-field-easymde
+ *
+ * Administrate's own stylesheet resets list styles and button colours, so the
+ * rendered Markdown and the EasyMDE toolbar need them put back inside the
+ * field. Both the underscored class written by this gem's partials and the
+ * dasherized class Administrate derives from the field type are matched, so
+ * overridden partials keep working either way.
+ */
+
+.simple_markdown .editor-toolbar button,
+.simple-markdown .editor-toolbar button,
+.field-unit--simple-markdown .editor-toolbar button,
+.field-unit--easy-mde .editor-toolbar button {
+  color: initial;
+}
+
+.simple_markdown ul,
+.simple_markdown ol,
+.simple-markdown ul,
+.simple-markdown ol,
+.attribute-data--simple-markdown ul,
+.attribute-data--simple-markdown ol,
+.attribute-data--easy-mde ul,
+.attribute-data--easy-mde ol {
+  margin: 0.5em 0;
+  padding-left: 2em;
+}
+
+.simple_markdown ul,
+.simple-markdown ul,
+.attribute-data--simple-markdown ul,
+.attribute-data--easy-mde ul {
+  list-style-type: disc;
+}
+
+.simple_markdown ol,
+.simple-markdown ol,
+.attribute-data--simple-markdown ol,
+.attribute-data--easy-mde ol {
+  list-style-type: decimal;
+}
+
+/* The editor is a block-level replacement for the textarea it hides. */
+.simple_markdown .EasyMDEContainer,
+.simple-markdown .EasyMDEContainer {
+  width: 100%;
+}

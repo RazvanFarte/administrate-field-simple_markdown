@@ -4,7 +4,26 @@ on: [push]
 
 jobs:
   tests:
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # The floor of the range the gemspec declares support for.
+          - name: Administrate 0.20, Rails 7.2 (floor)
+            administrate_version: '~> 0.20.0'
+            rails_version: '~> 7.2.0'
+          # Same constraints the Gemfile itself defaults to when these are
+          # unset, i.e. "whatever's newest" - kept explicit here so both
+          # legs of the matrix are named and neither depends on knowing the
+          # other exists.
+          - name: Administrate 1.0, Rails 8 (latest)
+            administrate_version: '>= 0.20'
+            rails_version: '>= 7.0'
+    env:
+      ADMINISTRATE_VERSION: ${{ matrix.administrate_version }}
+      RAILS_VERSION: ${{ matrix.rails_version }}
     steps:
       - uses: actions/checkout@v2
 

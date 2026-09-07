@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+#
+# One-time setup for contributors: installs Ruby and JS dependencies, wires
+# up the git hooks in .overcommit.yml (RuboCop/RSpec before push, plus the
+# throttled Playwright suite), checks Docker and pulls the image the browser
+# suite and Postgres benchmark need, and runs the spec suite to confirm the
+# install actually works end to end.
+#
+# Safe to re-run - every step is idempotent.
+
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+status() { printf '\n\033[1m==> %s\033[0m\n' "$1"; }
+warn() { printf 'WARNING: %s\n' "$1" >&2; }
+
+status "Checking Ruby"
+required_ruby=$(cat .ruby-version)
+current_ruby=$(ruby -e 'print RUBY_VERSION')
+echo "using ruby $current_ruby (.ruby-version wants $required_ruby)"
+if [ "$current_ruby" != "$required_ruby" ]; then
+  warn ".ruby-version wants $required_ruby - if you use rbenv/rvm/asdf, install" \
+       "and select that version before continuing."
+fi
+
+status "Installing Ruby dependencies"
+bundle install
+
+status "Installing JavaScript dependencies"
+if ! command -v npm >/dev/null 2>&1; then
+  echo "npm not found - install Node.js (see https://nodejs.org) and re-run this script." >&2
+  exit 1
+fi
+npm install
+
+status "Registering git hooks (overcommit)"
+bundle exec overcommit --install
+# Ad hoc `command:` hooks (the PrePush ones) each need their own signature
+# approved, not just the config file's - `--sign` with no argument does not
+# cover this. Signing both hook types explicitly is what actually clears it.
+bundle exec overcommit --sign pre-commit
+bundle exec overcommit --sign pre-push
+
+status "Checking Docker"
+playwright_image=$(sed -n "s/.*PLAYWRIGHT_IMAGE', '\\([^']*\\)'.*/\\1/p" \
+  tasks/support/dummy_server.rb)
+if ! command -v docker >/dev/null 2>&1; then
+  warn "Docker is not installed. The browser suite (rake browser:test) and the" \
+       "Postgres benchmark (rake bench:postgres) need it; everything else" \
+       "(rspec, rubocop) does not. See https://docs.docker.com/get-docker/."
+elif ! docker info >/dev/null 2>&1; then
+  warn "Docker is installed but not reachable - is the daemon running?" \
+       "(On WSL2, make sure Docker Desktop is started.)"
+else
+  echo "docker OK, pulling $playwright_image (used by rake browser:test and bench:browser)..."
+  docker pull "$playwright_image"
+fi
+
+status "Running the spec suite"
+bundle exec rspec
+
+status "Done"
+cat <<EOF
+
+Ready to contribute. A few things worth knowing:
+
+- 'rake' runs the spec suite (also the default 'overcommit' pre-push gate).
+- 'rake browser:test' runs the Playwright suite directly; pre-push runs it
+  automatically about once every 24h per clone. Force it with
+  FORCE_BROWSER_SUITE=1 git push, or skip it with SKIP_BROWSER_SUITE=1 git push.
+- 'rake bench:redcarpet' / 'bench:postgres' / 'bench:browser' measure
+  performance; see PERFORMANCE.md for the numbers they produce.
+EOF

@@ -1,3 +1,10 @@
 *.gem
 Gemfile.lock
 .ruby-gemset
+.history/
+node_modules/
+# Dummy application artefacts
+spec/dummy/db/*.sqlite3
+spec/dummy/log/
+spec/dummy/tmp/
+log/
