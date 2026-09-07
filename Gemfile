@@ -8,6 +8,14 @@ gemspec
 gem 'administrate', ENV.fetch('ADMINISTRATE_VERSION', '>= 0.20')
 gem 'rails', ENV.fetch('RAILS_VERSION', '>= 7.0')
 
+# json 3.0 added strict keyword validation to JSON.generate. ActiveSupport
+# 7.2's JSON encoder still passes the long-inert `quirks_mode:` keyword,
+# which json <3 silently ignored and json >=3 now raises ArgumentError on -
+# "unknown keyword: quirks_mode" - breaking every #easymde_options call on
+# the Rails 7.2 end of the range this gem supports. ActiveSupport 8 dropped
+# that keyword, so this only bites the floor of the range, not the ceiling.
+gem 'json', '< 3'
+
 group :development, :test do
   gem 'overcommit', '~> 0.64'
   gem 'rake', '~> 13.0'
